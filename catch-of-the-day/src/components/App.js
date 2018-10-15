@@ -14,10 +14,14 @@ class App extends React.Component {
 
   componentDidMount() {
     const { params } = this.props.match;
-    this.ref = base.syncState(`${params.storeId}/fishes`, {   //Creates a database with the sotre's name and a document of fishes
+    this.ref = base.syncState(`${params.storeId}/fishes`, {   //Stores a reference to the database using the store's name and a document of fishes
       context: this,
       state: "fishes"
     }); 
+  }
+
+  componentWillUnmount() {
+    base.removeBinding(this.ref);  //Removes binding to database reference
   }
 
   addToOrder = key => {
