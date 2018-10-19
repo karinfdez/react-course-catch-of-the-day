@@ -14,15 +14,25 @@ class App extends React.Component {
 
   componentDidMount() {
     const { params } = this.props.match;
+    const localStorageRef = localStorage.getItem(params.storeId);
+    if(localStorageRef) {  //Persist data if store exists
+      this.setState({ order: JSON.parse(localStorageRef)});
+    }
     this.ref = base.syncState(`${params.storeId}/fishes`, {   //Stores a reference to the database using the store's name and a document of fishes
       context: this,
       state: "fishes"
     }); 
   }
 
+  componentDidUpdate() {
+    const { params } = this.props.match;
+    localStorage.setItem(params.storeId, JSON.stringify(this.state.order));
+  }
+
   componentWillUnmount() {
     base.removeBinding(this.ref);  //Removes binding to database reference
   }
+
 
   addToOrder = key => {
     const order = { ...this.state.order };
