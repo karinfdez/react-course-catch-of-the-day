@@ -36,7 +36,17 @@ class App extends React.Component {
 
   addToOrder = key => {
     const order = { ...this.state.order };
+    //Either add to order, or update the numberin our oder
     order[key] = order[key] + 1 || 1;
+    this.setState({ order });
+  }
+
+  removeFromOrder = key => {
+    // 1. Take a copy of state
+    const order = { ...this.state.order };
+    // 2. Remove that item from order
+    delete order[key];  //No need to mirror with firsebase
+    // 3. Call setState to update our state object
     this.setState({ order });
   }
 
@@ -62,6 +72,15 @@ class App extends React.Component {
     this.setState({fishes})
   }
 
+  deleteFish = (key) => {
+    //1. take a copy of state
+    const fishes = { ...this.state.fishes };
+    // 2. update the state (using this approach  in order to be removed also from firebase)
+    fishes[key] = null;
+    //3. update state
+    this.setState({ fishes });
+  }
+
   loadSampleFishes = () => {
     this.setState({ fishes: sampleFishes });
   };
@@ -77,10 +96,11 @@ class App extends React.Component {
             )}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order} />
+        <Order fishes={this.state.fishes} order={this.state.order} removeFromOrder={this.removeFromOrder}/>
         <Inventory
           addFish={this.addFish}
           updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
           loadSampleFishes={this.loadSampleFishes}
           fishes={this.state.fishes}
         />
