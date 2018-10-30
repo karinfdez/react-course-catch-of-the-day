@@ -1,8 +1,14 @@
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 import { getFunName } from "../helpers";
 
 class StorePicker extends React.Component {
+  
   //Creating properties of StorePicker (myInput and goToStore)
+  
+  static propTypes = {
+    history: PropTypes.object
+  }
   myInput = React.createRef(); //To create a ref
 
   //Use this syntax to access component instance inside("this")
